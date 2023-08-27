@@ -1,0 +1,3 @@
+Activar vite: npm run dev
+Activar laravel: php artisan serve
+php artisan migrate:refresh --path=/database/migrations/create_purchases_table.php

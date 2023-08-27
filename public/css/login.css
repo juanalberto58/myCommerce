@@ -1,0 +1,20 @@
+/* theme.css */
+
+:root {
+    --color-primary: #ff0000; /* Color primario */
+    --color-secondary: #00ff00; /* Color secundario */
+    --color-text: #000000; /* Color del texto */
+    /* ... Agrega más colores según tus necesidades */
+  }
+  
+  body {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+  }
+  
+  .button {
+    background-color: var(--color-secondary);
+  }
+  
+  /* ... Agrega más reglas de estilo según tus necesidades */
+  

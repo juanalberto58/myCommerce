@@ -1,0 +1,58 @@
+/* theme.css */
+
+:root {
+    --color-primary: #ff0000; /* Color primario */
+    --color-secondary: #00ff00; /* Color secundario */
+    --color-text: #000000; /* Color del texto */
+    /* ... Agrega más colores según tus necesidades */
+  }
+  
+  body {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+  }
+  
+  .button {
+    background-color: var(--color-secondary);
+  }
+  
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button-container .button {
+    width: 150px;
+    height: 150px;
+    background-color: #f5f2f2;
+    margin: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px; /* Añade bordes redondeados */
+}
+
+.button-container .button a {
+    text-decoration: none;
+    color: #ce1616;
+}
+
+.button-container .button-content {
+    font-size: 16px;
+}
+
+  /* ... Agrega más reglas de estilo según tus necesidades */
+.button-container .button {
+    background-color: #3399fe; /* Cambia el color de fondo a azul */
+    color: #fff; /* Cambia el color del texto a blanco */
+    /* ... */
+}
+
+.button-container .button a {
+    text-decoration: none;
+    color: #fff; /* Color del texto (blanco) */
+}
