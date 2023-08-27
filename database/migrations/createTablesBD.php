@@ -4,18 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateAllTables extends Migration
 {
     public function up()
     {
-
+        // Users Table
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrement('id');
+            $table->bigIncrements('id');
             $table->string('dni')->unique();
             $table->string('name');
             $table->string('lastname');
-            $table->dateTime('birthdate',0)->nullable();
-            $table->string('phone',9);
+            $table->dateTime('birthdate')->nullable();
+            $table->string('phone', 9);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -24,9 +24,10 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // Purchases Table
         Schema::create('purchases', function (Blueprint $table) {
-            $table->bigIncrement('id');
-            $table->dateTime('date',0)->nullable();
+            $table->bigIncrements('id');
+            $table->dateTime('date')->nullable();
             $table->unsignedBigInteger('contact_id');
             $table->unsignedBigInteger('user_id');
             $table->decimal('tax_base', 10, 2);
@@ -40,8 +41,9 @@ return new class extends Migration
             $table->primary(['id']);
         });
 
+        // Purchase Order Lines Table
         Schema::create('purchase_order_lines', function (Blueprint $table) {
-            $table->bigIncrement('id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('purchase_id');
             $table->string('reference');
             $table->integer('quantity');
@@ -52,14 +54,15 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('purchase_id')->references('id')->on('purchases');
-            $table->foreign('contact_id')->references('id')->on('contact');
+            $table->foreign('supplier')->references('id')->on('contact');
 
             $table->primary(['id']);
         });
 
+        // Sales Table
         Schema::create('sales', function (Blueprint $table) {
-            $table->bigIncrement('id');
-            $table->dateTime('date',0)->nullable();
+            $table->bigIncrements('id');
+            $table->dateTime('date')->nullable();
             $table->unsignedBigInteger('contact_id');
             $table->unsignedBigInteger('user_id');
             $table->decimal('tax_base', 10, 2);
@@ -74,8 +77,9 @@ return new class extends Migration
             $table->primary(['id']);
         });
 
+        // Sale Order Lines Table
         Schema::create('sale_order_lines', function (Blueprint $table) {
-            $table->bigIncrement('id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('sale_id');
             $table->string('reference');
             $table->integer('quantity');
@@ -87,13 +91,14 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('sale_id')->references('id')->on('sales');
-            $table->foreign('contact_id')->references('id')->on('contact');
+            $table->foreign('supplier')->references('id')->on('contact');
 
             $table->primary(['id']);
         });
 
+        // Products Table
         Schema::create('products', function (Blueprint $table) {
-            $table->bigIncrement('id');
+            $table->bigIncrements('id');
             $table->string('reference')->unique();
             $table->string('name');
             $table->string('description');
@@ -111,16 +116,17 @@ return new class extends Migration
             $table->primary(['id']);
         });
 
+        // Contact Table
         Schema::create('contact', function (Blueprint $table) {
-            $table->bigIncrement('id');
-            $table->string('dni',10)->unique();
+            $table->bigIncrements('id');
+            $table->string('dni', 10)->unique();
             $table->string('name');
             $table->string('lastname');
-            $table->dateTime('birthdate',0)->nullable();
+            $table->dateTime('birthdate')->nullable();
             $table->string('email')->unique();
             $table->string('type');
             $table->string('address');
-            $table->string('phone',9);
+            $table->string('phone', 9);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
@@ -128,8 +134,16 @@ return new class extends Migration
 
             $table->primary(['id']);
         });
-
-
     }
 
-};
+    public function down()
+    {
+        Schema::dropIfExists('contact');
+        Schema::dropIfExists('products');
+        Schema::dropIfExists('sale_order_lines');
+        Schema::dropIfExists('sales');
+        Schema::dropIfExists('purchase_order_lines');
+        Schema::dropIfExists('purchases');
+        Schema::dropIfExists('users');
+    }
+}
