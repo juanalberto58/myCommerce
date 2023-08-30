@@ -10,9 +10,8 @@ class PurchaseOrderLine extends Model
 
     protected $fillable = [
         'purchase_id',
-        'reference',
         'quantity',
-        'supplier',
+        'product_id',
         'wholesale_price',
         'price',
         'tax',

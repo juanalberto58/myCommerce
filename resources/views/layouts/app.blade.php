@@ -24,7 +24,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
-
+    <script>
+        var authenticatedUserId = {{ auth()->check() ? auth()->user()->id : null }};
+    </script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @vite(['resources/js/purchase.js'])
     @vite(['resources/js/sales.js'])

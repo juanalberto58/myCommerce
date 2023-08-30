@@ -41,9 +41,8 @@ class Sale extends Model
         foreach ($data['lineasPedido'] as $linea) {
             $saleOrderLine = SalesOrderLine::create([
                 'sale_id' => $sale->id,
-                'reference' => $linea['reference'],
                 'quantity' => $linea['quantity'],
-                'supplier' => $linea['supplier'],
+                'product_id' => $linea['product_id'],
                 'wholesale_price' => $linea['tax_base'],
                 'tax' => $linea['tax'],
                 'margin' => $linea['margin'],

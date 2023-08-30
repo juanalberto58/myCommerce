@@ -44,8 +44,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Referencia</th>
-                                    <th>Proveedor</th>
+                                    <th>Producto</th>
                                     <th>Cantidad</th>
                                     <th>Base Imponible</th>
                                     <th>Iva</th>
@@ -55,8 +54,7 @@
                             <tbody id="lines-table-body">
                             @foreach($purchase->purchaseLines as $index => $linea)
                             <tr>
-                                <td><input type="text" name="lines[{{ $index }}][reference]" class="form-control editable-input" value="{{ $linea->reference }}"></td>
-                                <td><input type="text" name="lines[{{ $index }}][supplier]" class="form-control editable-input" value="{{ $linea->supplier }}"></td>
+                                <td><input type="text" name="lines[{{ $index }}][product_id]" class="form-control editable-input" value="{{ $linea->product_id }}"></td>
                                 <td><input type="text" name="lines[{{ $index }}][quantity]" class="form-control editable-input" style="width: 100px;" value="{{ $linea->quantity }}"></td>
                                 <td><input type="text" name="lines[{{ $index }}][wholesale_price]" class="form-control editable-input" style="width: 100px;" value="{{ $linea->wholesale_price }}"></td>
                                 <td><input type="text" name="lines[{{ $index }}][tax]" class="form-control editable-input" style="width: 80px;" value="{{ $linea->tax }}"></td>

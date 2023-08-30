@@ -35,6 +35,7 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
+                                    <th>Cliente</th>
                                     <th>Fecha</th>
                                     <th>Precio Coste</th>
                                     <th>Iva</th>

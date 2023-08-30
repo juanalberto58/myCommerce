@@ -41,8 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    const proveedorSelect = document.getElementById('proveedor');
-    cargarProveedores(proveedorSelect, contactsData);
+    // const proveedorSelect = document.getElementById('proveedor');
+    cargarProveedores(contactsData);
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -57,26 +57,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
-
 // Función para agregar una línea de pedido
 function agregarLineaPedido() {
-    var reference = document.getElementById('reference').value;
-    var supplier = document.getElementById('supplier').value;
+    var product_id = document.getElementById('product_id').value;
     var quantity = document.getElementById('quantity').value;
     var tax_base = document.getElementById('tax_base').value;
     var tax = document.getElementById('tax').value;
 
-    if (reference.trim() === '' || quantity.trim() === '') {
+
+    if (quantity.trim() === '') {
         alert('Por favor, complete todos los campos.');
         return;
     }
 
-    lineasPedido.push({ reference: reference, supplier: supplier, quantity: quantity, tax_base: tax_base, tax: tax });
+    lineasPedido.push({ product_id: product_id, quantity: quantity, tax_base: tax_base, tax: tax });
 
-    document.getElementById('reference').value = '';
-    document.getElementById('supplier').value = '';
+    document.getElementById('product_id').value = '';
     document.getElementById('quantity').value = '';
     document.getElementById('tax_base').value = '';
     document.getElementById('tax').value = '';
@@ -102,16 +98,14 @@ function actualizarTablaLineasPedido() {
 
     lineasPedido.forEach(function(linea, index) {
         var row = document.createElement('tr');
-        var referenceCell = document.createElement('td');
-        var supplierCell = document.createElement('td');
+        var productCell = document.createElement('td');
         var quantityCell = document.createElement('td');
         var tax_baseCell = document.createElement('td');
         var taxCell = document.createElement('td');
         var totalCell = document.createElement('td');
         var deleteCell = document.createElement('td');
 
-        referenceCell.innerText = linea.reference;
-        supplierCell.innerText = linea.supplier;
+        productCell.innerText = linea.product_id;
         quantityCell.innerText = linea.quantity;
         tax_baseCell.innerText = linea.tax_base;
         taxCell.innerText = linea.tax;
@@ -131,8 +125,7 @@ function actualizarTablaLineasPedido() {
         deleteCell.appendChild(deleteButton);
 
         row.appendChild(deleteCell);
-        row.appendChild(referenceCell);
-        row.appendChild(supplierCell);
+        row.appendChild(productCell);
         row.appendChild(quantityCell);
         row.appendChild(tax_baseCell);
         row.appendChild(taxCell);
@@ -242,16 +235,20 @@ function crearPedidoCompra() {
         totalPedido += totalLinea; 
     });
 
-     // Crear un objeto con los datos del pedido
-     var pedidoData = {
+    var contact_id = document.getElementById('contact_id').value;
+
+    // Crear un objeto con los datos del pedido
+    var pedidoData = {
         date: obtenerFechaActual(),
-        contact_id: 22, 
-        user_id: 22,  
+        contact_id: contact_id, 
+        user_id: authenticatedUserId,
         tax_base: taxBase,
         tax: tax,
         total: totalPedido,
         lineasPedido: lineasPedido
     };
+
+    console.log(pedidoData);
 
     // Enviar los datos al servidor utilizando AJAX con jQuery
     $.ajax({
@@ -330,8 +327,8 @@ function limpiarCamposFiltro() {
 }
 
 // Función para cargar todos los proveedores en el select
-function cargarProveedores(selectElement, contacts) {
-
+function cargarProveedores(contacts) {
+    var proveedorSelect = document.getElementById('proveedor');
     var proveedores = contacts.filter(function(contact) {
         return contact.type === 'proveedor';
     });
@@ -339,15 +336,18 @@ function cargarProveedores(selectElement, contacts) {
     proveedores.forEach(function(proveedor) {
         var option = document.createElement('option');
         option.value = proveedor.id;
-        option.textContent = proveedor.name;
-        selectElement.appendChild(option);
+        option.textContent = proveedor.name;contact_id
+        proveedorSelect.appendChild(option);
     });
+    
 
-    $(selectElement).select2({
+    $(proveedorSelect).select2({
         placeholder: 'Seleccionar proveedor',
         allowClear: true,
         theme: 'bootstrap'
     });
+
+
 }
 
 // Función para eliminar un pedido de compra.

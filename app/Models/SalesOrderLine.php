@@ -10,9 +10,8 @@ class SalesOrderLine extends Model
 
     protected $fillable = [
         'sale_id',
-        'reference',
         'quantity',
-        'supplier',
+        'product_id',
         'wholesale_price',
         'tax',
         'margin',

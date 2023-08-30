@@ -48,15 +48,19 @@ class UsersController extends Controller
             return redirect()->route('users.index')->with('error', 'El usuario no existe.');
         }
         
-        $user->dni = $request->input('dni');
-        $user->name = $request->input('name');
-        $user->lastname = $request->input('lastname');
-        $user->email = $request->input('email');
-        $user->is_admin = $request->input('type');
-
-        $user->save();
-
-        return redirect()->route('users.index', $user->id)->with('success', 'El usuario se ha actualizado correctamente.');
+        if (auth()->user()->id == $user->id || auth()->user()->is_admin) {
+            $user->dni = $request->input('dni');
+            $user->name = $request->input('name');
+            $user->lastname = $request->input('lastname');
+            $user->email = $request->input('email');
+            $user->is_admin = $request->input('type');
+    
+            $user->save();
+    
+            return redirect()->route('users.index', $user->id)->with('success', 'El usuario se ha actualizado correctamente.');
+        } else {
+            return redirect()->route('users.index')->with('error', 'No tienes permiso para editar este perfil');
+        }
     }
 
     // Funcion para eliminar un usuario concreto.

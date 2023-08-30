@@ -35,6 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+
 // Función para mostrar el listado de los pedidos de compra
 function cargarUsuarios() {
     var UsuariosTableBody = document.getElementById('users-table-body');

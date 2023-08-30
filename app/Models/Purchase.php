@@ -38,9 +38,8 @@ class Purchase extends Model
         foreach ($data['lineasPedido'] as $linea) {
             $purchaseOrderLine = PurchaseOrderLine::create([
                 'purchase_id' => $purchase->id,
-                'reference' => $linea['reference'],
                 'quantity' => $linea['quantity'],
-                'supplier' => $linea['supplier'],
+                'product_id' => $linea['product_id'],
                 'wholesale_price' => $linea['tax_base'],
                 'tax' => $linea['tax'],
                 'total' => $linea['total'],

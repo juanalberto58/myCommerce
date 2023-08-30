@@ -17,6 +17,7 @@ class Contact extends Model
         'type',
         'address',
         'phone',
+        'user_id'
     ];
 
     public static function createContact($data,$selectedType)
@@ -29,6 +30,7 @@ class Contact extends Model
             'type' => $selectedType,
             'address' => $data['address'],
             'phone' => $data['phone'],
+            'user_id' => auth()->id()
         ]);
     
         return $contact;

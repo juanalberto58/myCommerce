@@ -74,7 +74,7 @@ Route::delete('/contacts/{id}', [ContactController::class, 'delete'])->name('con
 Route::get('/users', [UsersController::class, 'index'])->name('users.index');
 Route::get('/users/create', [UsersController::class, 'create'])->name('create_user');
 Route::get('/users/{id}', [UsersController::class, 'show'])->name('user.show');
-Route::put('/users/{id}', [UsersController::class, 'update'])->name('user.update');
+Route::put('/users/{id}', [UsersController::class, 'update'])->name('user.update')->middleware('auth');;
 Route::post('/users/store', [UsersController::class, 'store'])->name('store.users');
 Route::delete('/users/{id}', [UsersController::class, 'delete'])->name('users.delete');
 

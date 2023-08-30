@@ -71,8 +71,7 @@ class SalesController extends Controller
         $lines = $request->input('lines', []);
         foreach ($lines as $lineIndex => $lineData) {
             $line = $sale->saleLines[$lineIndex];
-            $line->reference = $lineData['reference'];
-            $line->supplier = $lineData['supplier'];
+            $line->product_id = $lineData['product_id'];
             $line->quantity = $lineData['quantity'];
             $line->wholesale_price = $lineData['wholesale_price'];
             $line->tax = $lineData['tax'];

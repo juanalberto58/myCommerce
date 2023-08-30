@@ -51,8 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Función para agregar una línea de pedido
 function agregarLineaPedidoVenta() {
-    var reference = document.getElementById('reference').value;
-    var supplier = document.getElementById('supplier').value;
+    var product_id = document.getElementById('product_id').value;
     var quantity = document.getElementById('quantity').value;
     var tax_base = document.getElementById('tax_base').value;
     var tax = document.getElementById('tax').value;
@@ -60,15 +59,14 @@ function agregarLineaPedidoVenta() {
     var margin = parseFloat(salePrice) - (parseFloat(quantity) * parseFloat(tax_base) * (1 + parseFloat(tax) / 100));
 
     // Validar que los campos no estén vacíos
-    if (reference.trim() === '' || quantity.trim() === '') {
+    if (quantity.trim() === '') {
         alert('Por favor, complete todos los campos.');
         return;
     }
 
     // Agregar la línea de pedido al arreglo
     lineasPedido.push({
-        reference: reference,
-        supplier: supplier,
+        product_id: product_id,
         quantity: quantity,
         tax_base: tax_base,
         tax: tax,
@@ -77,8 +75,7 @@ function agregarLineaPedidoVenta() {
     });
 
     // Limpiar los campos del formulario
-    document.getElementById('reference').value = '';
-    document.getElementById('supplier').value = '';
+    document.getElementById('product_id').value = '';
     document.getElementById('quantity').value = '';
     document.getElementById('tax_base').value = '';
     document.getElementById('tax').value = '';
@@ -105,8 +102,7 @@ function actualizarTablaLineasPedido() {
     lineasPedido.forEach(function(linea, index) {
         console.log(linea);
         var row = document.createElement('tr');
-        var referenceCell = document.createElement('td');
-        var supplierCell = document.createElement('td');
+        var productCell = document.createElement('td');
         var quantityCell = document.createElement('td');
         var tax_baseCell = document.createElement('td');
         var taxCell = document.createElement('td');
@@ -115,8 +111,7 @@ function actualizarTablaLineasPedido() {
         var deleteCell = document.createElement('td');
         var marginCell = document.createElement('td');
 
-        referenceCell.innerText = linea.reference;
-        supplierCell.innerText = linea.supplier;
+        productCell.innerText = linea.product_id;
         quantityCell.innerText = linea.quantity;
         tax_baseCell.innerText = linea.tax_base;
         taxCell.innerText = linea.tax;
@@ -141,8 +136,7 @@ function actualizarTablaLineasPedido() {
         deleteCell.appendChild(deleteButton);
 
         row.appendChild(deleteCell);
-        row.appendChild(referenceCell);
-        row.appendChild(supplierCell);
+        row.appendChild(productCell);
         row.appendChild(quantityCell);
         row.appendChild(tax_baseCell);
         row.appendChild(taxCell);
@@ -192,8 +186,12 @@ function cargarVentas() {
     console.log(sales);
     sales.forEach(function(dato) {
         var row = document.createElement('tr');
+        var contacto = contactsData.find(function(contact) {
+            return contact.id === dato.contact_id;
+        });
         row.innerHTML = `
             <td><a class="sale-link" data-id="${dato.id}" href="#">${dato.id}</a></td>
+            <td>${contacto ? contacto.name : 'Desconocido'}</td>
             <td>${dato.date}</td>
             <td>${dato.tax_base}</td>
             <td>${dato.tax}</td>
@@ -258,19 +256,19 @@ function crearPedidoVenta() {
         totalPedido += totalLinea; // Sumar al total del pedido completo
     });
 
+    var contact_id = document.getElementById('contact_id').value;
+
      // Crear un objeto con los datos del pedido
      var pedidoData = {
         date: obtenerFechaActual(),
-        contact_id: '11', // Puedes implementar esta función para obtener el ID del contacto
-        user_id: '22',    // Puedes implementar esta función para obtener el ID del usuario
+        contact_id: contact_id,
+        user_id: authenticatedUserId,
         tax_base: taxBase,
         tax: tax,
         total: totalPedido,
         margin: margin,
         lineasPedido: lineasPedido
     };
-
-    console.log(pedidoData)
 
     // Enviar los datos al servidor utilizando AJAX con jQuery
     $.ajax({

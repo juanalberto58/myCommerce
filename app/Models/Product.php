@@ -20,6 +20,7 @@ class Product extends Model
         'height',
         'price',
         'image',
+        'user_id'
     ];
 }
 

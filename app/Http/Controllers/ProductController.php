@@ -48,6 +48,7 @@ class ProductController extends Controller
         $product->name = $request->input('name');
         $product->description = $request->input('description');
         $product->image = $request->input('image');
+        $product->user_id = auth()->id();
 
         $product->save();
 
