@@ -24,6 +24,16 @@ class Purchase extends Model
         return $this->hasMany(PurchaseOrderLine::class);
     }
 
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public static function createPurchase($data)
     {
         $purchase = self::create([

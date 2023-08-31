@@ -10,11 +10,13 @@
                     <div class="form-group row">
                         <label for="contact_id" class="col-md-4 col-form-label text-md-right">Proveedor:</label>
                         <div class="col-md-6">
-                            <input type="text" id="contact_id" class="form-control">
-                        </div>
-                        <!-- <div class="col-md-6">
+                            <script>
+                                var purchases = {!! $purchasesJson !!};
+                                var contactsData = {!! $contactsJson !!};
+                                var productsData = {!! $productsJson !!};
+                            </script>
                             <select id="contact_id" class="form-control select2"></select>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -25,25 +27,26 @@
                     <div class="form-group row">
                         <label for="product_id" class="col-md-4 col-form-label text-md-right">Producto:</label>
                         <div class="col-md-6">
-                            <input type="text" id="product_id" class="form-control">
+                            <select id="product_id" class="form-control select2" required></select>
+                            <!-- <input type="text" id="product_id" class="form-control"> -->
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="quantity" class="col-md-4 col-form-label text-md-right">Cantidad:</label>
                         <div class="col-md-6">
-                            <input type="text" id="quantity" class="form-control">
+                            <input type="text" id="quantity" class="form-control" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="tax_base" class="col-md-4 col-form-label text-md-right">Base Imponible:</label>
                         <div class="col-md-6">
-                            <input type="text" id="tax_base" class="form-control">
+                            <input type="text" id="tax_base" class="form-control" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="tax" class="col-md-4 col-form-label text-md-right">Iva:</label>
                         <div class="col-md-6">
-                            <input type="text" id="tax" class="form-control">
+                            <input type="text" id="tax" value='21' class="form-control">
                         </div>
                     </div>
                     <div class="form-group row mb-0">
@@ -73,7 +76,6 @@
                             </tr>
                         </thead>
                         <tbody id="lineasPedidoTableBody">
-                            <!-- Aquí se reflejarán las líneas de pedido agregadas -->
                         </tbody>
                     </table>
                 </div>

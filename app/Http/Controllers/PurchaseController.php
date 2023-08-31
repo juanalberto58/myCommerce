@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Purchase;
 use App\Models\Contact;
+use App\Models\Product;
+
 
 class PurchaseController extends Controller
 {
@@ -28,7 +30,15 @@ class PurchaseController extends Controller
     // Redirigimos a la vista de creacion de pedido
     public function create(Request $request)
     {
-        return view('create_purchase');
+        $purchases = Purchase::all();
+        $contacts = Contact::all();
+        $products = Product::all();
+
+        $purchasesJson = $purchases->toJson();
+        $contactsJson = $contacts->toJson();
+        $productsJson = $products->toJson();
+
+        return view('create_purchase', compact('purchasesJson', 'contactsJson', 'productsJson'));
     }
 
     // Funcion para guardar un nuevo pedido.
@@ -46,7 +56,12 @@ class PurchaseController extends Controller
     {
         try {
             $purchase = Purchase::find($id);
-            return view('purchase', compact('purchase'));
+            
+            // Obtener los nombres de proveedores y productos correspondientes
+            $contacts = Contact::whereIn('id', $purchase->purchaseLines->pluck('contact_id'))->get();
+            $products = Product::whereIn('id', $purchase->purchaseLines->pluck('product_id'))->get();
+
+            return view('purchase', compact('purchase', 'contacts', 'products'));
         } catch (\Exception $e) {
             return redirect()->route('purchases.index')->with('error', 'El pedido no pudo encontrarse.');
         }

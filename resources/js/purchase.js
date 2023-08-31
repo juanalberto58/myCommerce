@@ -13,8 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
         crearPedidoCompra();
     });
 
+    cargarProveedores(contactsData, 'contact_id');
+    cargarProductos(productsData, 'product_id');
 });
 
+
+//Evento para mostrar un pedido de compra concreto
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('purchase-link')) {
         event.preventDefault();
@@ -23,9 +27,11 @@ document.addEventListener('click', function(event) {
     }
 });
 
+
 document.addEventListener('DOMContentLoaded', function() {
     const filtrarCompras = document.getElementById('filtrarCompras');
     const limpiarFiltro = document.getElementById('limpiarFiltro');
+    cargarProveedores(contactsData, 'proveedor');
 
     filtrarCompras.addEventListener('click', function() {
         realizarFiltrado();
@@ -38,11 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     cargarCompras();
 
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    // const proveedorSelect = document.getElementById('proveedor');
-    cargarProveedores(contactsData);
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -105,7 +106,17 @@ function actualizarTablaLineasPedido() {
         var totalCell = document.createElement('td');
         var deleteCell = document.createElement('td');
 
-        productCell.innerText = linea.product_id;
+        // Buscar el objeto de producto correspondiente al ID en la línea actual
+        var producto = productsData.find(function(product) {
+            return product.id == linea.product_id;
+        });
+
+        if (producto){
+            productCell.innerText = producto.name;
+        }else{
+            productCell.innerText = 'Producto no encontrado';
+        }
+
         quantityCell.innerText = linea.quantity;
         tax_baseCell.innerText = linea.tax_base;
         taxCell.innerText = linea.tax;
@@ -327,8 +338,9 @@ function limpiarCamposFiltro() {
 }
 
 // Función para cargar todos los proveedores en el select
-function cargarProveedores(contacts) {
-    var proveedorSelect = document.getElementById('proveedor');
+function cargarProveedores(contacts, select) {
+    var proveedorSelect = document.getElementById(select);
+    
     var proveedores = contacts.filter(function(contact) {
         return contact.type === 'proveedor';
     });
@@ -336,19 +348,46 @@ function cargarProveedores(contacts) {
     proveedores.forEach(function(proveedor) {
         var option = document.createElement('option');
         option.value = proveedor.id;
-        option.textContent = proveedor.name;contact_id
+        option.textContent = proveedor.name;
         proveedorSelect.appendChild(option);
     });
-    
 
+    // Inicializar Select2 para ambos selects
     $(proveedorSelect).select2({
         placeholder: 'Seleccionar proveedor',
         allowClear: true,
         theme: 'bootstrap'
     });
-
-
 }
+
+
+// Función para cargar todos los proveedores en el select
+function cargarProductos(products, select) {
+    var productosSelect = document.getElementById(select);
+    var proveedorSelect = document.getElementById('contact_id');
+
+    console.log(proveedorSelect.value);
+
+    var productos = products.filter(function(product) {
+        return product.contact_id == proveedorSelect.value;
+    });
+
+    productos.forEach(function(producto) {
+        var option = document.createElement('option');
+        option.value = producto.id;
+        option.textContent = producto.name;
+        productosSelect.appendChild(option);
+    });
+
+    // Inicializar Select2 para ambos selects
+    $(productosSelect).select2({
+        placeholder: 'Seleccionar Producto',
+        allowClear: true,
+        theme: 'bootstrap'
+    });
+}
+
+
 
 // Función para eliminar un pedido de compra.
 function eliminarPedidoCompra(purchaseId) {
