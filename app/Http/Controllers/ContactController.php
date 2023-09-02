@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+
+    // Funcion para mostrar la vista de inicio de los contactos
     public function index()
     {
         $contacts = Contact::all();
@@ -14,29 +16,33 @@ class ContactController extends Controller
         return view('contacts', compact('contactsJson'));
     }
 
+    // Funcion para redirigir a la vista de creacion de contactos
     public function create()
     {
         return view('create_contact');
     }
 
+    // Funcion para guardar un contacto en la bbdd
     public function store(Request $request)
     {
         $data = $request->all();
-        $selectedType = $request->input('contactType'); // Obtener el valor seleccionado
+        $selectedType = $request->input('contactType'); 
         $success = Contact::createContact($data,$selectedType);
         return redirect()->route('create_contact')->with('success', 'Contacto creado exitosamente.');
     }
 
+    // Funcion para mostrar un contacto concreto
     public function show($id)
     {
         try {
-            $contact = Contact::find($id); // Cambia "$purchase" a "$contact"
-            return view('contact', compact('contact')); // Cambia "compact('purchase')" a "compact('contact')"
+            $contact = Contact::find($id);
+            return view('contact', compact('contact'));
         } catch (\Exception $e) {
             return redirect()->route('contacts.index')->with('error', 'El contacto no pudo encontrarse.');
         }
     }
 
+    // Funcion para actualizar los datos de un contacto concreto.
     public function update(Request $request, $id)
     {
 

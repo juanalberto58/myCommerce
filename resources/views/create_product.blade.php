@@ -31,6 +31,55 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                <label for="weight">Peso GR:</label>
+                                <input type="text" name="weight" id="weight" class="form-control" required>
+                                @error('weight')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="height">Altura CM:</label>
+                                <input type="text" name="height" id="height" class="form-control" required>
+                                @error('height')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="width">Ancho CM:</label>
+                                <input type="text" name="width" id="width" class="form-control" required>
+                                @error('width')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="length">Largo CM:</label>
+                                <input type="text" name="length" id="length" class="form-control" required>
+                                @error('length')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Precio:</label>
+                                <input type="text" name="price" id="price" class="form-control" required>
+                                @error('price')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="stock">Stock:</label>
+                                <input type="text" name="stock" id="stock" class="form-control" required>
+                                @error('stock')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_id">Proveedor:</label>
+                                <input type="text" name="contact_id" id="contact_id" class="form-control" required>
+                                @error('contact_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 <label for="imagen">URL de la Imagen:</label>
                                 <input type="text" name="imagen" id="imagen" class="form-control" required>
                                 @error('imagen')

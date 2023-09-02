@@ -39,7 +39,6 @@
                                     <th>Proveedor</th>
                                     <th>Base Imponible</th>
                                     <th>Total</th>
-                                    <th>Estado</th>
                                 </tr>
                             </thead>
                             <tbody id="compras-table-body">

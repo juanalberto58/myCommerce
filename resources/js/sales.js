@@ -1,29 +1,7 @@
 // Arreglo para almacenar las líneas de pedido agregadas
 var lineasPedido = [];
 
-document.addEventListener('DOMContentLoaded', function() {
-    const addButtonSale = document.getElementById('addButtonSale');
-    const createSaleOrder = document.getElementById('createSaleOrder');
-
-    addButtonSale.addEventListener('click', function() {
-        agregarLineaPedidoVenta();
-    });
-
-    createSaleOrder.addEventListener('click', function() {
-        crearPedidoVenta();
-    });
-    cargarClientes(contactsData, 'contact_id');
-    cargarProductos(productsData, 'product_id');
-});
-
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('sale-link')) {
-        event.preventDefault();
-        var saleId = event.target.getAttribute('data-id');
-        window.location.href = `/sales/${saleId}`;
-    }
-});
-
+//Evento para los botones y las acciones de la vista de inicio
 document.addEventListener('DOMContentLoaded', function() {
 
     const filtrarVentas = document.getElementById('filtrarVentas');
@@ -42,6 +20,32 @@ document.addEventListener('DOMContentLoaded', function() {
     cargarVentas();
 });
 
+//Evento para los botones y las acciones de la vista de creacion de pedidos
+document.addEventListener('DOMContentLoaded', function() {
+    const addButtonSale = document.getElementById('addButtonSale');
+    const createSaleOrder = document.getElementById('createSaleOrder');
+
+    addButtonSale.addEventListener('click', function() {
+        agregarLineaPedidoVenta();
+    });
+
+    createSaleOrder.addEventListener('click', function() {
+        crearPedidoVenta();
+    });
+    cargarClientes(contactsData, 'contact_id');
+    cargarProductos(productsData, 'product_id');
+});
+
+//Evento para mostrar un pedido de venta concreto
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('sale-link')) {
+        event.preventDefault();
+        var saleId = event.target.getAttribute('data-id');
+        window.location.href = `/sales/${saleId}`;
+    }
+});
+
+//Evento para el boton de eliminar una linea de pedido
 document.addEventListener('DOMContentLoaded', function() {
     const deleteSaleButton = document.getElementById('deleteSaleButton');
 
@@ -74,7 +78,7 @@ function agregarLineaPedidoVenta() {
         tax_base: tax_base,
         tax: tax,
         salePrice: salePrice,
-        margin: margin.toFixed(2) // Agregar el valor del margen calculado
+        margin: margin.toFixed(2)
     });
 
     // Limpiar los campos del formulario
@@ -110,8 +114,8 @@ function actualizarTablaLineasPedido() {
         var quantityCell = document.createElement('td');
         var tax_baseCell = document.createElement('td');
         var taxCell = document.createElement('td');
-        var totalCell = document.createElement('td'); // Agregar celda para el total
-        var salePriceCell = document.createElement('td'); // Agregar celda para el precio de venta
+        var totalCell = document.createElement('td'); 
+        var salePriceCell = document.createElement('td'); 
         var deleteCell = document.createElement('td');
         var marginCell = document.createElement('td');
 
@@ -154,9 +158,9 @@ function actualizarTablaLineasPedido() {
         row.appendChild(quantityCell);
         row.appendChild(tax_baseCell);
         row.appendChild(taxCell);
-        row.appendChild(totalCell); // Agregar la celda del total a la fila
-        row.appendChild(salePriceCell); // Agregar la celda del precio de venta a la fila
-        row.appendChild(marginCell); // Agregar la celda del margen a la fila
+        row.appendChild(totalCell); 
+        row.appendChild(salePriceCell); 
+        row.appendChild(marginCell);
         tablaBody.appendChild(row);
     });
 }
@@ -173,10 +177,11 @@ function actualizarSumaTotal() {
     sumaTotalCell.innerText = sumaTotal.toFixed(2);
 }
 
+// Función para obtener la fecha actual
 function obtenerFechaActual() {
     var fecha = new Date();
     var dia = fecha.getDate();
-    var mes = fecha.getMonth() + 1; // Los meses en JavaScript son indexados desde 0
+    var mes = fecha.getMonth() + 1; 
     var año = fecha.getFullYear();
     
     // Formatear la fecha en el formato deseado (YYYY-MM-DD)
@@ -190,7 +195,7 @@ function eliminarLineaPedido(index) {
     lineasPedido.splice(index, 1);
     actualizarTablaLineasPedido();
     agregarFilaSumaTotal();
-    actualizarSumaTotal(); // Llamar a la función para actualizar la suma total
+    actualizarSumaTotal();
 }
 
 // Función para mostrar el listado de los pedidos de venta
@@ -218,7 +223,7 @@ function cargarVentas() {
     var saleLinks = document.querySelectorAll('.sale-link');
     saleLinks.forEach(function(link) {
     link.addEventListener('click', function(event) {
-        event.preventDefault(); // Evita la acción de navegación por defecto
+        event.preventDefault(); 
 
         var saleId = link.getAttribute('data-id');
         mostrarDetallesPedido(saleId);
@@ -226,13 +231,12 @@ function cargarVentas() {
 });
 }
 
+// Funcion para mostrar los detalles de un pedido
 function mostrarDetallesPedido(saleId) {
-    // Realiza una petición AJAX para obtener los detalles del pedido concreto
     $.ajax({
         type: 'GET',
-        url: `/sales/${saleId}`, // Ruta que obtiene los detalles del pedido
+        url: `/sales/${saleId}`,
         success: function(data) {
-            // Aquí puedes actualizar la vista o hacer lo que necesites con los datos recibidos
             console.log(data);
         },
         error: function() {
@@ -265,9 +269,8 @@ function crearPedidoVenta() {
         var subtotal = parseFloat(linea.quantity) * parseFloat(linea.tax_base);
         var ivaAmount = (subtotal * (parseFloat(linea.tax) / 100));
         var totalLinea = subtotal + ivaAmount;
-        linea.total = totalLinea; // Agregar el total calculado a la línea de pedido
-
-        totalPedido += totalLinea; // Sumar al total del pedido completo
+        linea.total = totalLinea; 
+        totalPedido += totalLinea;
     });
 
     var contact_id = document.getElementById('contact_id').value;
@@ -287,11 +290,11 @@ function crearPedidoVenta() {
     // Enviar los datos al servidor utilizando AJAX con jQuery
     $.ajax({
         type: "POST",
-        url: "/sales/store", // Ruta al controlador que procesará los datos
+        url: "/sales/store", 
         data: JSON.stringify(pedidoData),
         contentType: "application/json",
         headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content') // Agregar el token CSRF
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content') 
         },
         dataType: "json",
         success: function(data) {
@@ -417,7 +420,6 @@ function cargarProductos(products, select) {
         productosSelect.appendChild(option);
     });
 
-    // Inicializar Select2 para ambos selects
     $(productosSelect).select2({
         placeholder: 'Seleccionar Producto',
         allowClear: true,

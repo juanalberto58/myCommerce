@@ -1,3 +1,4 @@
+//Evento para los botones y las acciones de la vista de inicio
 document.addEventListener('DOMContentLoaded', function() {
 
     const filtrarContactos = document.getElementById('filtrarContactos');
@@ -8,13 +9,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     limpiarFiltro.addEventListener('click', function() {
-        cargarContactos(); // Llama a la función cargarCompras para mostrar todos los pedidos nuevamente
-        limpiarCamposFiltro(); // Limpia los campos de filtro
+        cargarContactos(); 
+        limpiarCamposFiltro(); 
     });
 
     cargarContactos();
 });
 
+//Evento para mostrar un contacto concreto
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('contact-link')) {
         event.preventDefault();
@@ -23,6 +25,7 @@ document.addEventListener('click', function(event) {
     }
 });
 
+//Evento para el boton de eliminar un contacto
 document.addEventListener('DOMContentLoaded', function() {
     const deleteContactButton = document.getElementById('deleteContactButton');
 
@@ -33,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Función para mostrar el listado de los pedidos de compra
+// Función para mostrar el listado de contactos
 function cargarContactos() {
     var contactosTableBody = document.getElementById('contacts-table-body');
     contactosTableBody.innerHTML = '';
@@ -44,20 +47,22 @@ function cargarContactos() {
             <td>${dato.name}</td>
             <td>${dato.lastname}</td>
             <td>${dato.email}</td>
+            <td>${dato.type}</td>
         </tr>
     `;
     contactosTableBody.appendChild(row);
     });
     var contactsLinks = document.querySelectorAll('.contact-link');
-    contactsLinks.forEach(function(link) { // Cambia "contacstLinks" a "contactsLinks"
+    contactsLinks.forEach(function(link) { 
         link.addEventListener('click', function(event) {
-            event.preventDefault(); // Evita la acción de navegación por defecto
-            var contactId = link.getAttribute('data-id'); // Cambia "contactsId" a "contactId"
+            event.preventDefault(); 
+            var contactId = link.getAttribute('data-id'); 
             mostrarDetallesContacto(contactId);
         });
     });
 }
 
+// Función para mostrar los detalles de un contacto
 function mostrarDetallesContacto(contactsId) {
     $.ajax({
         type: 'GET',
@@ -74,23 +79,23 @@ function mostrarDetallesContacto(contactsId) {
 // Función para filtrar los contactos
 function realizarFiltrado() {
     var name = document.getElementById('name').value;
-    var dni = document.getElementById('dni').value;
+    var email = document.getElementById('email').value;
     var isProveedorChecked = document.getElementById('proveedorCheck').checked;
     var isClienteChecked = document.getElementById('clienteCheck').checked;
 
     var resultadosFiltrados = contacts.filter(function(contact) {
         var matchName = (!name || contact.name.toLowerCase().includes(name.toLowerCase()));
-        var matchDNI = (!dni || contact.dni.toLowerCase().includes(dni.toLowerCase()));
+        var matchEmail = (!email || contact.email.toLowerCase().includes(email.toLowerCase()));
         var matchTipo = (isProveedorChecked && contact.type === 'proveedor') ||
                         (isClienteChecked && contact.type === 'cliente');
 
-        return matchName && matchDNI && matchTipo;
+        return matchName && matchEmail && matchTipo;
     });
 
     actualizarTabla(resultadosFiltrados);
 }
 
-// Función para actualizar la tabla de los pedidos de venta
+// Función para actualizar la tabla de los contactos
 function actualizarTabla(resultados) {
     var tbody = document.getElementById('contacts-table-body');
     tbody.innerHTML = '';
@@ -102,6 +107,7 @@ function actualizarTabla(resultados) {
             <td>${contact.name}</td>
             <td>${contact.lastname}</td>
             <td>${contact.email}</td>
+            <td>${contact.type}</td>
         `;
         tbody.appendChild(row);
     });
@@ -114,7 +120,6 @@ function limpiarCamposFiltro() {
     document.getElementById('proveedorCheck').checked = false;
     document.getElementById('clienteCheck').checked = false;
 }
-
 
 // Función para eliminar un contacto.
 function eliminarContacto(contactId) {

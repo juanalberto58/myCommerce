@@ -1,5 +1,25 @@
 var lineasPedido = [];
 
+//Evento para los botones y las acciones de la vista de inicio
+document.addEventListener('DOMContentLoaded', function() {
+    const filtrarCompras = document.getElementById('filtrarCompras');
+    const limpiarFiltro = document.getElementById('limpiarFiltro');
+    cargarProveedores(contactsData, 'proveedor');
+
+    filtrarCompras.addEventListener('click', function() {
+        realizarFiltrado();
+    });
+
+    limpiarFiltro.addEventListener('click', function() {
+        cargarCompras(); // Llama a la función cargarCompras para mostrar todos los pedidos
+        limpiarCamposFiltro(); // Limpia los campos de filtro
+    });
+
+    cargarCompras();
+
+});
+
+//Evento para los botones y las acciones de la vista de creacion de pedidos
 document.addEventListener('DOMContentLoaded', function() {
 
     const addButton = document.getElementById('addButton');
@@ -27,25 +47,7 @@ document.addEventListener('click', function(event) {
     }
 });
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    const filtrarCompras = document.getElementById('filtrarCompras');
-    const limpiarFiltro = document.getElementById('limpiarFiltro');
-    cargarProveedores(contactsData, 'proveedor');
-
-    filtrarCompras.addEventListener('click', function() {
-        realizarFiltrado();
-    });
-
-    limpiarFiltro.addEventListener('click', function() {
-        cargarCompras(); // Llama a la función cargarCompras para mostrar todos los pedidos
-        limpiarCamposFiltro(); // Limpia los campos de filtro
-    });
-
-    cargarCompras();
-
-});
-
+//Evento para el boton de eliminar una linea de pedido
 document.addEventListener('DOMContentLoaded', function() {
     const deletePurchaseButton = document.getElementById('deletePurchaseButton');
 
@@ -193,7 +195,6 @@ function cargarCompras() {
             <td>${contacto ? contacto.name : 'Desconocido'}</td>
             <td>${dato.tax_base}</td>
             <td>${dato.total}</td>
-            <td>${dato.estado}</td>
         </tr>
     `;
         comprasTableBody.appendChild(row);
@@ -207,7 +208,6 @@ function cargarCompras() {
     });
 });
 }
-
 
  // Función que para obtener los detalles del pedido concreto
 function mostrarDetallesPedido(purchaseId) {
@@ -325,7 +325,6 @@ function actualizarTabla(resultados) {
             <td>${contacto ? contacto.name : 'Desconocido'}</td>
             <td>${purchase.tax_base}</td>
             <td>${purchase.total}</td>
-            <td>${purchase.estado}</td>
         `;
         tbody.appendChild(row);
     });
@@ -360,13 +359,10 @@ function cargarProveedores(contacts, select) {
     });
 }
 
-
 // Función para cargar todos los proveedores en el select
 function cargarProductos(products, select) {
     var productosSelect = document.getElementById(select);
     var proveedorSelect = document.getElementById('contact_id');
-
-    console.log(proveedorSelect.value);
 
     var productos = products.filter(function(product) {
         return product.contact_id == proveedorSelect.value;
@@ -379,15 +375,12 @@ function cargarProductos(products, select) {
         productosSelect.appendChild(option);
     });
 
-    // Inicializar Select2 para ambos selects
     $(productosSelect).select2({
         placeholder: 'Seleccionar Producto',
         allowClear: true,
         theme: 'bootstrap'
     });
 }
-
-
 
 // Función para eliminar un pedido de compra.
 function eliminarPedidoCompra(purchaseId) {

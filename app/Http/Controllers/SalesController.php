@@ -9,6 +9,7 @@ use App\Models\Product;
 
 class SalesController extends Controller
 {
+    // Funcion para mostrar la vista de inicio de los pedidos de ventas
     public function index()
     {
         $sales = Sale::all();
@@ -20,6 +21,7 @@ class SalesController extends Controller
         return view('sales', compact('salesJson', 'contactsJson'));
     }
 
+    // Funcion para redirigir a la vista de creacion de pedidos de ventas
     public function create()
     {
         $contacts = Contact::all();
@@ -31,11 +33,13 @@ class SalesController extends Controller
         return view('create_sale', compact('contactsJson', 'productsJson'));
     }
 
+    // Funcion para redirigir a la vista de ventas
     public function showView()
     {
-        return view('sales'); // Devuelve la vista HTML
+        return view('sales'); 
     }
 
+    // Funcion para guardar un pedido de venta en la bbdd
     public function store(Request $request)
     {
         $data = $request->json()->all();
@@ -45,22 +49,22 @@ class SalesController extends Controller
         return response()->json(["success" => $success]);
     }
 
+    // Funcion para mostrar un pedido de venta concreto
     public function show($id)
     {
         try {
             $sale = Sale::find($id);
 
-            // Obtener los nombres de proveedores y productos correspondientes
             $contacts = Contact::whereIn('id', $sale->saleLines->pluck('contact_id'))->get();
             $products = Product::whereIn('id', $sale->saleLines->pluck('product_id'))->get();
 
             return view('sale', compact('sale', 'contacts', 'products'));
         } catch (\Exception $e) {
-            // Manejo de error si el pedido no se encuentra
             return redirect()->route('sales.index')->with('error', 'El pedido no pudo encontrarse.');
         }
     }
 
+    // Funcion para actualizar los datos de un pedido de venta concreto.
     public function update(Request $request, $id)
     {
         $sale = Sale::find($id);
@@ -94,19 +98,19 @@ class SalesController extends Controller
         return redirect()->route('sales.show', $sale->id)->with('success', 'El pedido de venta y las líneas de pedido se han actualizado correctamente.');
     }
 
-        // Funcion para eliminar un pedido de venta concreto.
-        public function delete($id)
-        {
-            $sale = Sale::find($id);
+    // Funcion para eliminar un pedido de venta concreto.
+    public function delete($id)
+    {
+        $sale = Sale::find($id);
 
-            if (!$sale) {
-                return response()->json(['success' => false]);
-            }
-    
-            $sale->saleLines()->delete();
-
-            $success = $sale->delete();
-
-            return response()->json(['success' => 'Pedido de venta y líneas de pedido eliminados con éxito.']);
+        if (!$sale) {
+            return response()->json(['success' => false]);
         }
+
+        $sale->saleLines()->delete();
+
+        $success = $sale->delete();
+
+        return response()->json(['success' => 'Pedido de venta y líneas de pedido eliminados con éxito.']);
+    }
 }

@@ -19,8 +19,10 @@ class Product extends Model
         'length',
         'height',
         'price',
+        'stock',
         'image',
-        'user_id'
+        'user_id',
+        'contact_id'
     ];
 }
 

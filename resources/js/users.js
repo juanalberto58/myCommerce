@@ -1,3 +1,4 @@
+//Evento para los botones y las acciones de la vista de inicio
 document.addEventListener('DOMContentLoaded', function() {
 
     const filterUsers = document.getElementById('filterUsers');
@@ -25,6 +26,7 @@ document.addEventListener('click', function(event) {
     }
 });
 
+//Evento para los botones y las acciones de la vista de un usuario concreto
 document.addEventListener('DOMContentLoaded', function() {
     const deleteUserButton = document.getElementById('deleteUserButton');
 
@@ -41,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function cargarUsuarios() {
     var UsuariosTableBody = document.getElementById('users-table-body');
     UsuariosTableBody.innerHTML = '';
+
     users.forEach(function(dato) {
         var row = document.createElement('tr');
         row.innerHTML = `
@@ -63,6 +66,7 @@ function cargarUsuarios() {
     });
 }
 
+// Función para filtrar los usuarios
 function realizarFiltrado(){
     var nombreFiltro = document.getElementById('name').value.trim();
     var dniFiltro = document.getElementById('dni').value.trim();
@@ -77,7 +81,7 @@ function realizarFiltrado(){
 
 };
 
-
+// Función para mostrar los datos de un usuario
 function mostrarDetallesUsuario(usersId) {
     $.ajax({
         type: 'GET',
@@ -86,12 +90,12 @@ function mostrarDetallesUsuario(usersId) {
             console.log(data);
         },
         error: function() {
-            alert('Hubo un error al obtener los detalles del pedido.');
+            alert('Hubo un error al obtener los detalles del usuarios.');
         }
     });
 }
 
-
+// Función para cargar los usuarios filtrados
 function cargarUsuariosFiltrados(usuarios) {
     var UsuariosTableBody = document.getElementById('users-table-body');
     UsuariosTableBody.innerHTML = '';
@@ -99,7 +103,9 @@ function cargarUsuariosFiltrados(usuarios) {
         var row = document.createElement('tr');
         row.innerHTML = `
             <td><a class="user-link" data-id="${dato.id}" href="/users/${dato.id}">${dato.id}</a></td>
+            <td>${dato.dni}</td>
             <td>${dato.name}</td>
+            <td>${dato.lastname}</td>
             <td>${dato.email}</td>
         `;
         UsuariosTableBody.appendChild(row);

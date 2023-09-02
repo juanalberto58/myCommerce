@@ -7,6 +7,7 @@ use App\Models\User;
 
 class UsersController extends Controller
 {
+    // Funcion para mostrar la vista de inicio de los usuarios
     public function index()
     {
         $users = User::all();
@@ -14,25 +15,27 @@ class UsersController extends Controller
         return view('users', compact('usersJson'));
     }
 
+    // Funcion para redirigir a la vista de creacion de usuarios
     public function create()
     {
         return view('create_user');
     }
 
+    // Funcion para guardar un usuario en la bbdd
     public function store(Request $request)
     {
         $data = $request->all();
-        $selectedType = $request->input('is_admin'); // Obtener el valor seleccionado
+        $selectedType = $request->input('is_admin'); 
         $success = User::createUser($data,$selectedType);
         return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente.');
     }
 
-    
+    // Funcion para mostrar un usuario concreto
     public function show($id)
     {
         try {
-            $user = User::find($id); // Cambia "$purchase" a "$contact"
-            return view('user', compact('user')); // Cambia "compact('purchase')" a "compact('contact')"
+            $user = User::find($id); 
+            return view('user', compact('user')); 
         } catch (\Exception $e) {
             return redirect()->route('users.index')->with('error', 'El usuario no pudo encontrarse.');
         }

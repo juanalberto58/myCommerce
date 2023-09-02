@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     filterData();
 });
 
+// Función para filtrar los datos a mostrar
 function filterData() {
 
     var salesData = {

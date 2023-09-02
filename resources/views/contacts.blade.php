@@ -14,9 +14,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="channel" class="col-md-4 col-form-label text-md-right">Dni:</label>
+                            <label for="channel" class="col-md-4 col-form-label text-md-right">Email:</label>
                             <div class="col-md-6">
-                                <input type="text" id="dni" class="form-control">
+                                <input type="text" id="email" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row mb-0">
@@ -55,6 +55,7 @@
                                     <th>Nombre</th>
                                     <th>Apellidos</th>
                                     <th>Email</th>
+                                    <th>Tipo</th>
                                 </tr>
                             </thead>
                             <tbody id="contacts-table-body">
