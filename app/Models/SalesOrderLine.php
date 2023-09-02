@@ -19,8 +19,13 @@ class SalesOrderLine extends Model
         'salePrice',
     ];
 
-    // public function sale()
-    // {
-    //     return $this->belongsTo(Sale::class);
-    // }
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

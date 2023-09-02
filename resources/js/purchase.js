@@ -92,7 +92,7 @@ function agregarFilaSumaTotal() {
     tablaBody.appendChild(row);
 }
 
-// Función para actualizar la tabla de lineas de pedido
+// Función para actualizar la tabla de lineas de pedido al agregar lineas de pedido
 function actualizarTablaLineasPedido() {
     var tablaBody = document.getElementById('lineasPedidoTableBody');
     tablaBody.innerHTML = '';
@@ -106,7 +106,7 @@ function actualizarTablaLineasPedido() {
         var totalCell = document.createElement('td');
         var deleteCell = document.createElement('td');
 
-        // Buscar el objeto de producto correspondiente al ID en la línea actual
+        // Mostramos nombre de producto en vez de la id
         var producto = productsData.find(function(product) {
             return product.id == linea.product_id;
         });

@@ -13,15 +13,17 @@
                         <div class="form-group row">
                             <div class="form-group col-md-4">
                                 <label for="date">Fecha:</label>
-                                <input type="text" name="date" id="date" class="form-control" value="{{ $sale->date }}">
+                                <input type="text" name="date" id="date" class="form-control" value="{{ $sale->date }}" readonly>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="contact_id">Cliente:</label>
-                                <input type="text" name="contact_id" id="contact_id" class="form-control" value="{{ $sale->contact_id }}">
+                                <input type="text" class="form-control" value="{{ $sale->contact ? $sale->contact->name : 'Proveedor no encontrado' }}" readonly>
+                                <input type="hidden" name="contact_id" value="{{ $sale->contact ? $sale->contact->id : '' }}">
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="user_id">Creado por:</label>
-                                <input type="text" name="user_id" id="user_id" class="form-control" value="{{ $sale->user_id }}">
+                                <input type="text" class="form-control" value="{{ $sale->user ? $sale->user->name : 'Usuario no encontrado' }}" readonly>
+                                <input type="hidden" name="user_id" value="{{ $sale->user ? $sale->user->id : '' }}">
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="tax_base">Precio coste:</label>
@@ -60,7 +62,15 @@
                             <tbody id="lines-table-body">
                             @foreach($sale->saleLines as $index => $linea)
                             <tr>
-                                <td><input type="text" name="lines[{{ $index }}][product_id]" class="form-control editable-input" value="{{ $linea->product_id }}"></td>
+                                <td>
+                                    @if ($linea->product)
+                                        <input type="text" class="form-control editable-input" value="{{ $linea->product->name }}" readonly>
+                                        <input type="hidden" name="lines[{{ $index }}][product_id]" value="{{ $linea->product_id }}">                                    
+                                    @else
+                                        Producto no encontrado
+                                    @endif
+                                </td>
+                                <!-- <td><input type="text" name="lines[{{ $index }}][product_id]" class="form-control editable-input" value="{{ $linea->product_id }}"></td> -->
                                 <td><input type="text" name="lines[{{ $index }}][quantity]" class="form-control editable-input" style="width: 100px;" value="{{ $linea->quantity }}"></td>
                                 <td><input type="text" name="lines[{{ $index }}][wholesale_price]" class="form-control editable-input" style="width: 100px;" value="{{ $linea->wholesale_price }}"></td>
                                 <td><input type="text" name="lines[{{ $index }}][tax]" class="form-control editable-input" style="width: 80px;" value="{{ $linea->tax }}"></td>

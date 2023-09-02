@@ -26,6 +26,16 @@ class Sale extends Model
         return $this->hasMany(SalesOrderLine::class);
     }
 
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public static function createSale($data)
     {
         $sale = self::create([

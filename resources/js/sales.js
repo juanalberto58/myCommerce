@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     createSaleOrder.addEventListener('click', function() {
         crearPedidoVenta();
     });
+    cargarClientes(contactsData, 'contact_id');
+    cargarProductos(productsData, 'product_id');
 });
 
 document.addEventListener('click', function(event) {
@@ -26,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const filtrarVentas = document.getElementById('filtrarVentas');
     const limpiarFiltro = document.getElementById('limpiarFiltro');
+    cargarClientes(contactsData, 'cliente');
 
     filtrarVentas.addEventListener('click', function() {
         realizarFiltrado();
@@ -95,6 +98,7 @@ function agregarFilaSumaTotal() {
     tablaBody.appendChild(row);
 }
 
+// Función para actualizar la tabla de lineas de pedido al agregar lineas de pedido
 function actualizarTablaLineasPedido() {
     var tablaBody = document.getElementById('lineasPedidoTableBody');
     tablaBody.innerHTML = '';
@@ -111,7 +115,17 @@ function actualizarTablaLineasPedido() {
         var deleteCell = document.createElement('td');
         var marginCell = document.createElement('td');
 
-        productCell.innerText = linea.product_id;
+        // Mostramos nombre de producto en vez de la id
+        var producto = productsData.find(function(product) {
+            return product.id == linea.product_id;
+        });
+
+        if (producto){
+            productCell.innerText = producto.name;
+        }else{
+            productCell.innerText = 'Producto no encontrado';
+        }
+
         quantityCell.innerText = linea.quantity;
         tax_baseCell.innerText = linea.tax_base;
         taxCell.innerText = linea.tax;
@@ -297,16 +311,19 @@ function crearPedidoVenta() {
 // Función para filtrar los pedidos de venta
 function realizarFiltrado() {
     var fecha = document.getElementById('fecha').value;
-    var proveedor = document.getElementById('proveedor').value;
+    var clienteId = parseInt(document.getElementById('cliente').value);
 
     var resultadosFiltrados = sales.filter(function(sale) {
-        if (
-            (!fecha || sale.date === fecha) &&
-            (!proveedor || sale.contact_name.toLowerCase().includes(proveedor.toLowerCase()))
-        ) {
+        var fechaFiltrar = !fecha || sale.date === fecha;
+        var clienteFiltrar = isNaN(clienteId) || sale.contact_id === clienteId;
+
+        // Si no se selecciona proveedor ni fecha, mostrar todos los resultados
+        if (isNaN(clienteId) && fechaFiltrar) {
             return true;
         }
-        return false;
+
+        // Filtrar por proveedor y fecha si se seleccionan ambos
+        return fechaFiltrar && clienteFiltrar;
     });
 
     actualizarTabla(resultadosFiltrados);
@@ -319,13 +336,17 @@ function actualizarTabla(resultados) {
 
     resultados.forEach(function(sale) {
         var row = document.createElement('tr');
+        var contacto = contactsData.find(function(contact) {
+            return contact.id === sale.contact_id;
+        });
         row.innerHTML = `
             <td><a class="sale-link" data-id="${sale.id}" href="#">${sale.id}</a></td>
+            <td>${contacto ? contacto.name : 'Desconocido'}</td>
             <td>${sale.date}</td>
-            <td>${sale.contact_id}</td>
             <td>${sale.tax_base}</td>
+            <td>${sale.tax}</td>
             <td>${sale.total}</td>
-            <td>${sale.estado}</td>
+            <td>${sale.margin}</td>
         `;
         tbody.appendChild(row);
     });
@@ -361,4 +382,45 @@ function eliminarPedidoVenta(saleId) {
             }
         });
     }
+}
+
+// Función para cargar todos los clientes en el select
+function cargarClientes(contacts, select) {
+    var clienteSelect = document.getElementById(select);
+    
+    var clientes = contacts.filter(function(contact) {
+        return contact.type === 'cliente';
+    });
+
+    clientes.forEach(function(cliente) {
+        var option = document.createElement('option');
+        option.value = cliente.id;
+        option.textContent = cliente.name;
+        clienteSelect.appendChild(option);
+    });
+
+    $(clienteSelect).select2({
+        placeholder: 'Seleccionar cliente',
+        allowClear: true,
+        theme: 'bootstrap'
+    });
+}
+
+// Función para cargar todos los proveedores en el select
+function cargarProductos(products, select) {
+    var productosSelect = document.getElementById(select);
+
+    products.forEach(function(producto) {
+        var option = document.createElement('option');
+        option.value = producto.id;
+        option.textContent = producto.name;
+        productosSelect.appendChild(option);
+    });
+
+    // Inicializar Select2 para ambos selects
+    $(productosSelect).select2({
+        placeholder: 'Seleccionar Producto',
+        allowClear: true,
+        theme: 'bootstrap'
+    });
 }

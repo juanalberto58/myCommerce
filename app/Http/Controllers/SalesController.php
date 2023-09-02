@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sale;
 use App\Models\Contact;
+use App\Models\Product;
 
 class SalesController extends Controller
 {
@@ -21,7 +22,13 @@ class SalesController extends Controller
 
     public function create()
     {
-        return view('create_sale');
+        $contacts = Contact::all();
+        $products = Product::all();
+
+        $contactsJson = $contacts->toJson();
+        $productsJson = $products->toJson();
+
+        return view('create_sale', compact('contactsJson', 'productsJson'));
     }
 
     public function showView()
@@ -42,7 +49,12 @@ class SalesController extends Controller
     {
         try {
             $sale = Sale::find($id);
-            return view('sale', compact('sale'));
+
+            // Obtener los nombres de proveedores y productos correspondientes
+            $contacts = Contact::whereIn('id', $sale->saleLines->pluck('contact_id'))->get();
+            $products = Product::whereIn('id', $sale->saleLines->pluck('product_id'))->get();
+
+            return view('sale', compact('sale', 'contacts', 'products'));
         } catch (\Exception $e) {
             // Manejo de error si el pedido no se encuentra
             return redirect()->route('sales.index')->with('error', 'El pedido no pudo encontrarse.');

@@ -9,12 +9,16 @@
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="contact_id" class="col-md-4 col-form-label text-md-right">Cliente:</label>
-                        <div class="col-md-6">
-                            <input type="text" id="contact_id" class="form-control">
-                        </div>
                         <!-- <div class="col-md-6">
-                            <select id="contact_id" class="form-control select2"></select>
+                            <input type="text" id="contact_id" class="form-control">
                         </div> -->
+                        <script>
+                                var contactsData = {!! $contactsJson !!};
+                                var productsData = {!! $productsJson !!};
+                            </script>
+                        <div class="col-md-6">
+                            <select id="contact_id" class="form-control select2"></select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -25,7 +29,8 @@
                     <div class="form-group row">
                         <label for="product_id" class="col-md-4 col-form-label text-md-right">Producto:</label>
                         <div class="col-md-6">
-                            <input type="text" id="product_id" class="form-control">
+                            <!-- <input type="text" id="product_id" class="form-control"> -->
+                            <select id="product_id" class="form-control select2" required></select>
                         </div>
                     </div>
                     <div class="form-group row">
