@@ -74,10 +74,9 @@
                                 <td><input type="text" name="lines[{{ $index }}][quantity]" class="form-control editable-input" style="width: 100px;" value="{{ $linea->quantity }}"></td>
                                 <td><input type="text" name="lines[{{ $index }}][wholesale_price]" class="form-control editable-input" style="width: 100px;" value="{{ $linea->wholesale_price }}"></td>
                                 <td><input type="text" name="lines[{{ $index }}][tax]" class="form-control editable-input" style="width: 80px;" value="{{ $linea->tax }}"></td>
+                                <td><input type="text" name="lines[{{ $index }}][total]" class="form-control editable-input" style="width: 100px;" value="{{ $linea->total }}"></td>
                                 <td><input type="text" name="lines[{{ $index }}][salePrice]" class="form-control editable-input" style="width: 100px;" value="{{ $linea->salePrice }}"></td>
                                 <td><input type="text" name="lines[{{ $index }}][margin]" class="form-control editable-input" style="width: 100px;" value="{{ $linea->margin }}"></td>
-                                <td><input type="text" name="lines[{{ $index }}][total]" class="form-control editable-input" style="width: 100px;" value="{{ $linea->total }}"></td>
-
                             </tr>
                             @endforeach
                             </tbody>

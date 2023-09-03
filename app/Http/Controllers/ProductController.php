@@ -88,6 +88,18 @@ class ProductController extends Controller
         return response()->json(['success' => 'Producto eliminado correctamente.']);
     }
 
+    // Función para actualizar el stock de un producto
+    public function actualizarStock(Product $product, $cantidad)
+    {
+        if ($cantidad >= 0) {
+            $product->stock = $product->stock + abs($cantidad);
+        } else{
+            $product->stock = $product->stock - abs($cantidad);
+        }
+
+        $product->save();
+    }
+
 
 
 

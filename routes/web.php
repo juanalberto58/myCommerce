@@ -80,6 +80,7 @@ Route::delete('/users/{id}', [UsersController::class, 'delete'])->name('users.de
 
 // Rutas de Estadisticas
 Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
+Route::post('/statistics/generar-informe', [StatisticsController::class, 'generarInforme'])->name('statistics.generarInforme');
 
 
 Auth::routes();

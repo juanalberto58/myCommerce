@@ -90,16 +90,6 @@ function agregarLineaPedidoVenta() {
 
     // Actualizar la tabla con las líneas de pedido agregadas
     actualizarTablaLineasPedido();
-    agregarFilaSumaTotal();
-    actualizarSumaTotal();
-}
-
-// Función para agregar la fila de suma total al final de la tabla
-function agregarFilaSumaTotal() {
-    var tablaBody = document.getElementById('lineasPedidoTableBody');
-    var row = document.createElement('tr');
-    row.innerHTML = '<td colspan="6"></td><td id="sumaTotal"></td>';
-    tablaBody.appendChild(row);
 }
 
 // Función para actualizar la tabla de lineas de pedido al agregar lineas de pedido
@@ -165,18 +155,6 @@ function actualizarTablaLineasPedido() {
     });
 }
 
-// Función para calcular y mostrar la suma total
-function actualizarSumaTotal() {
-    var sumaTotal = 0;
-
-    lineasPedido.forEach(function(linea) {
-        sumaTotal += parseFloat(linea.quantity) * parseFloat(linea.tax_base) + (parseFloat(linea.tax) / 100);
-    });
-
-    var sumaTotalCell = document.getElementById('sumaTotal');
-    sumaTotalCell.innerText = sumaTotal.toFixed(2);
-}
-
 // Función para obtener la fecha actual
 function obtenerFechaActual() {
     var fecha = new Date();
@@ -194,8 +172,6 @@ function obtenerFechaActual() {
 function eliminarLineaPedido(index) {
     lineasPedido.splice(index, 1);
     actualizarTablaLineasPedido();
-    agregarFilaSumaTotal();
-    actualizarSumaTotal();
 }
 
 // Función para mostrar el listado de los pedidos de venta
@@ -263,8 +239,8 @@ function crearPedidoVenta() {
     lineasPedido.forEach(function(linea) {
 
         taxBase += parseFloat(linea.tax_base);
-        tax += parseFloat(linea.tax);
         salePrice += parseFloat(linea.salePrice);
+        tax = parseFloat(linea.tax);
 
         var subtotal = parseFloat(linea.quantity) * parseFloat(linea.tax_base);
         var ivaAmount = (subtotal * (parseFloat(linea.tax) / 100));
@@ -272,6 +248,8 @@ function crearPedidoVenta() {
         linea.total = totalLinea; 
         totalPedido += totalLinea;
     });
+
+    margin = parseFloat(salePrice) - parseFloat(totalPedido);
 
     var contact_id = document.getElementById('contact_id').value;
 
@@ -282,7 +260,7 @@ function crearPedidoVenta() {
         user_id: authenticatedUserId,
         tax_base: taxBase,
         tax: tax,
-        total: totalPedido,
+        total: salePrice,
         margin: margin,
         lineasPedido: lineasPedido
     };

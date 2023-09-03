@@ -45,6 +45,15 @@ class SalesController extends Controller
         $data = $request->json()->all();
 
         $success = Sale::createSale($data);
+
+        $productController = new ProductController();
+
+        foreach ($data['lineasPedido'] as $linea) {
+            $product = Product::find($linea['product_id']);
+            if ($product) {
+                $productController->actualizarStock($product, -$linea['quantity']);
+            }
+        }
     
         return response()->json(["success" => $success]);
     }

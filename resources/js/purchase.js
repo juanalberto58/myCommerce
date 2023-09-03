@@ -82,17 +82,8 @@ function agregarLineaPedido() {
 
     // Actualizar la tabla con las líneas de pedido agregadas
     actualizarTablaLineasPedido();
-    agregarFilaSumaTotal();
-    actualizarSumaTotal();
 }
 
-// Función para agregar la fila de suma total al final de la tabla
-function agregarFilaSumaTotal() {
-    var tablaBody = document.getElementById('lineasPedidoTableBody');
-    var row = document.createElement('tr');
-    row.innerHTML = '<td colspan="6"></td><td id="sumaTotal"></td>';
-    tablaBody.appendChild(row);
-}
 
 // Función para actualizar la tabla de lineas de pedido al agregar lineas de pedido
 function actualizarTablaLineasPedido() {
@@ -147,17 +138,6 @@ function actualizarTablaLineasPedido() {
     });
 }
 
-// Función para calcular y mostrar la suma total
-function actualizarSumaTotal() {
-    var sumaTotal = 0;
-
-    lineasPedido.forEach(function(linea) {
-        sumaTotal += parseFloat(linea.quantity) * parseFloat(linea.tax_base) + (parseFloat(linea.tax) / 100);
-    });
-
-    var sumaTotalCell = document.getElementById('sumaTotal');
-    sumaTotalCell.innerText = sumaTotal.toFixed(2);
-}
 
 // Funciona para obtner la fecha actual
 function obtenerFechaActual() {
@@ -176,8 +156,6 @@ function obtenerFechaActual() {
 function eliminarLineaPedido(index) {
     lineasPedido.splice(index, 1);
     actualizarTablaLineasPedido();
-    agregarFilaSumaTotal();
-    actualizarSumaTotal();
 }
 
 // Función para mostrar el listado de los pedidos de compra
@@ -233,17 +211,19 @@ function crearPedidoCompra() {
     var taxBase = 0;
     var tax = 0;
     var totalPedido = 0;
-    
+    var totalPedidoSinImpuestos=0;
+
     lineasPedido.forEach(function(linea) {
         taxBase += parseFloat(linea.tax_base);
-        tax += parseFloat(linea.tax);
+        tax = parseFloat(linea.tax);
 
         var subtotal = parseFloat(linea.quantity) * parseFloat(linea.tax_base);
         var ivaAmount = (subtotal * (parseFloat(linea.tax) / 100));
         var totalLinea = subtotal + ivaAmount;
+        totalPedidoSinImpuestos = totalPedidoSinImpuestos + subtotal;
         linea.total = totalLinea; 
-
         totalPedido += totalLinea; 
+
     });
 
     var contact_id = document.getElementById('contact_id').value;
@@ -253,7 +233,7 @@ function crearPedidoCompra() {
         date: obtenerFechaActual(),
         contact_id: contact_id, 
         user_id: authenticatedUserId,
-        tax_base: taxBase,
+        tax_base: totalPedidoSinImpuestos,
         tax: tax,
         total: totalPedido,
         lineasPedido: lineasPedido
@@ -284,6 +264,7 @@ function crearPedidoCompra() {
         }
     });
 }
+
 
 // Función para filtrar los pedidos de compra
 function realizarFiltrado() {
