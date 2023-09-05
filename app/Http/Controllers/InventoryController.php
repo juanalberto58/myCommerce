@@ -20,5 +20,4 @@ class InventoryController extends Controller
         return view('inventory', compact('products', 'contactsJson'));
     }
 }
-
 ?>

@@ -27,6 +27,9 @@
     <script>
         var authenticatedUserId = {{ auth()->check() ? auth()->user()->id : null }};
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @vite(['resources/js/purchase.js'])
     @vite(['resources/js/sales.js'])

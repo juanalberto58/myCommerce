@@ -50,7 +50,7 @@ class Purchase extends Model
                 'purchase_id' => $purchase->id,
                 'quantity' => $linea['quantity'],
                 'product_id' => $linea['product_id'],
-                'wholesale_price' => $linea['tax_base'],
+                'wholesale_price' => $linea['wholesale_price'],
                 'tax' => $linea['tax'],
                 'total' => $linea['total'],
             ]);
