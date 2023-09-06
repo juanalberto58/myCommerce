@@ -84,7 +84,8 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 300px;">Guardar Cambios</button>
-                <button id="deleteSaleButton" class="btn btn-danger delete-purchase" data-id="{{ $sale->id }}">Eliminar Pedido</button>    
+                <button id="deleteSaleButton" class="btn btn-danger delete-purchase" data-id="{{ $sale->id }}">Eliminar Pedido</button>  
+                <button type="button" class="btn btn-primary" id="downloadButtonInvoice">Descargar Factura</button>  
             </form>
             </div>
         </div>

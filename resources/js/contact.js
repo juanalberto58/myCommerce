@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
         cargarContactos(); 
         limpiarCamposFiltro(); 
     });
-
     cargarContactos();
 });
 
@@ -35,6 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
         eliminarContacto(contactId);
     });
 });
+
+
 
 // Función para mostrar el listado de contactos
 function cargarContactos() {
@@ -145,3 +146,5 @@ function eliminarContacto(contactId) {
         });
     }
 }
+
+

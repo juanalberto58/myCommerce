@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Models\Purchase;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -25,10 +27,25 @@ class ContactController extends Controller
     // Funcion para guardar un contacto en la bbdd
     public function store(Request $request)
     {
+
+        $request->validate([
+            'dni' => 'required|regex:/^[0-9]{8}[A-Za-z]$/',
+            'name' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|min:9',
+            'contactType' => 'required|in:proveedor,cliente'
+        ], [
+            'email.email' => 'El formato del correo electrónico no es válido.',
+            'phone.min' => 'El telefono debe contener 9 dígitos.',
+            'dni.regex' => 'El DNI debe tener 8 dígitos numéricos.',
+            'contactType.in' => 'Selecciona un tipo válido: Proveedor o Cliente.'
+        ]);
+
         $data = $request->all();
         $selectedType = $request->input('contactType'); 
         $success = Contact::createContact($data,$selectedType);
-        return redirect()->route('create_contact')->with('success', 'Contacto creado exitosamente.');
+        return redirect()->route('contacts.index')->with('success', 'Contacto creado exitosamente.');
     }
 
     // Funcion para mostrar un contacto concreto
@@ -36,7 +53,15 @@ class ContactController extends Controller
     {
         try {
             $contact = Contact::find($id);
-            return view('contact', compact('contact'));
+    
+            if (!$contact) {
+                return redirect()->route('contacts.index')->with('error', 'El contacto no pudo encontrarse.');
+            }
+    
+            $purchases = Purchase::where('contact_id', $id)->orderBy('created_at', 'desc')->take(10)->get();
+            $sales = Sale::where('contact_id', $id)->orderBy('created_at', 'desc')->take(10)->get();
+
+            return view('contact', compact('contact','sales','purchases'));
         } catch (\Exception $e) {
             return redirect()->route('contacts.index')->with('error', 'El contacto no pudo encontrarse.');
         }

@@ -56,6 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
         var purchaseId = event.target.getAttribute('data-id');
         eliminarPedidoCompra(purchaseId);
     });
+
+    document.getElementById('downloadButtonDeliveryNote').addEventListener('click', function () {
+        generarAlbaranPDF();
+    });
 });
 
 
@@ -389,3 +393,53 @@ function eliminarPedidoCompra(purchaseId) {
     }
 }
 
+// Define una función para generar el PDF de el albaran
+function generarAlbaranPDF() {
+    var productsTableData = [['Producto', 'Cantidad', 'Base Imponible', 'Iva', 'Total']];
+    var productsTableRows = document.querySelectorAll('#lines-table-body tr');
+
+    productsTableRows.forEach(function (row) {
+        var cells = row.querySelectorAll('td');
+        if (cells.length >= 5) { 
+            var rowData = [];
+            for (var i = 0; i < 5; i++) {
+                if (cells[i].querySelector('input')) {
+                    rowData.push(cells[i].querySelector('input').value);
+                } else {
+                    rowData.push(cells[i].textContent.trim());
+                }
+            }
+            productsTableData.push(rowData);
+        }
+    });
+
+    // Añadimos los datos al pdf
+    var docDefinition = {
+        content: [
+            { text: 'Albaran', style: 'header' },
+            ' ',
+            ' ',
+            { text: 'Productos', style: 'subheader' },
+            {
+                table: {
+                    headerRows: 1,
+                    body: productsTableData
+                }
+            }
+        ],
+        styles: {
+            header: {
+                fontSize: 18,
+                bold: true
+            },
+            subheader: {
+                fontSize: 16,
+                bold: true,
+                margin: [0, 10, 0, 5]
+            }
+        }
+    };
+
+    // Genera y descarga el PDF
+    pdfMake.createPdf(docDefinition).download('factura.pdf');
+}

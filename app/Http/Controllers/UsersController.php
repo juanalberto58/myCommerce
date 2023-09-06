@@ -24,9 +24,21 @@ class UsersController extends Controller
     // Funcion para guardar un usuario en la bbdd
     public function store(Request $request)
     {
+        $request->validate([
+            'dni' => 'required|regex:/^[0-9]{8}[A-Za-z]$/',
+            'name' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+        ], [
+            'dni.regex' => 'El DNI debe tener 8 dígitos numéricos.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'email.email' => 'El formato del correo electrónico no es válido.',
+        ]);
+    
         $data = $request->all();
         $selectedType = $request->input('is_admin'); 
-        $success = User::createUser($data,$selectedType);
+        $success = User::createUser($data, $selectedType);
         return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente.');
     }
 

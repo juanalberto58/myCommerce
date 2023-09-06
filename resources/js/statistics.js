@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('filterButton').addEventListener('click', function () {
         generaInforme();
         creaGrafica();
-
+        // muestraProductoMasRentable();
+        productoMasRentable(salesLinesJson, productsJson);
     });
     document.getElementById('downloadButton').addEventListener('click', function () {
         generaInformePDF();
@@ -206,3 +207,52 @@ function generaInformePDF() {
     // Generamos el pdf y lo descargamos
     pdfMake.createPdf(docDefinition).download('informe.pdf');
 }
+
+
+function productoMasRentable(salesLinesJson, productsJson) {
+    var mostProfitableProduct = null;
+    var highestScore = -Infinity;
+
+    salesLinesJson.forEach(function (linea) {
+        var product_id = linea.product_id;
+        var margin = parseFloat(linea.margin);
+        var quantity = parseInt(linea.quantity);
+
+        // Ajustamos el peso que le vamos a dar a ambos factores para el calculo
+        var marginWeight = 0.5;  
+        var quantityWeight = 0.5; 
+
+        // Calculamos la puntuación obtenida
+        var score = margin * marginWeight + quantity * quantityWeight;
+
+        if (score > highestScore) {
+            highestScore = score;
+            mostProfitableProduct = product_id;
+        }
+    });
+
+    var minScore = 0;
+    var maxScore = 10;
+
+    // Normalizamos la puntuación de 0 a 10
+    var normalizedScore = (highestScore - minScore) / (maxScore - minScore);
+
+    normalizedScore = Math.min(Math.max(normalizedScore, 0), 10);
+
+    var productName = "Desconocido";
+    var profitableProduct = productsJson.find(function (product) {
+        return product.id === mostProfitableProduct;
+    });
+
+    if (profitableProduct) {
+        productName = profitableProduct.name;
+    }
+
+    var resultadoProductoMasRentable = document.getElementById('resultadoProductoMasRentable');
+
+    resultadoProductoMasRentable.innerHTML = `
+        <p>Nombre del Producto: ${productName}</p>
+        <p>Puntuación (0-10): ${normalizedScore.toFixed(2)}</p>
+    `;
+}
+

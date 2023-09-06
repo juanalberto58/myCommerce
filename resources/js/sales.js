@@ -43,7 +43,17 @@ document.addEventListener('click', function(event) {
         var saleId = event.target.getAttribute('data-id');
         window.location.href = `/sales/${saleId}`;
     }
+
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('downloadButtonInvoice').addEventListener('click', function () {
+        generarFacturaPDF();
+    });
+});
+
+
+
 
 //Evento para el boton de eliminar una linea de pedido
 document.addEventListener('DOMContentLoaded', function() {
@@ -403,4 +413,55 @@ function cargarProductos(products, select) {
         allowClear: true,
         theme: 'bootstrap'
     });
+}
+
+// Define una función para generar el PDF de la factura
+function generarFacturaPDF() {
+    var productsTableData = [['Producto', 'Cantidad', 'Base Imponible', 'Iva', 'Total']];
+    var productsTableRows = document.querySelectorAll('#lines-table-body tr');
+
+    productsTableRows.forEach(function (row) {
+        var cells = row.querySelectorAll('td');
+        if (cells.length >= 5) { 
+            var rowData = [];
+            for (var i = 0; i < 5; i++) {
+                if (cells[i].querySelector('input')) {
+                    rowData.push(cells[i].querySelector('input').value);
+                } else {
+                    rowData.push(cells[i].textContent.trim());
+                }
+            }
+            productsTableData.push(rowData);
+        }
+    });
+
+    // Añadimos los datos al pdf
+    var docDefinition = {
+        content: [
+            { text: 'Factura', style: 'header' },
+            ' ',
+            ' ',
+            { text: 'Productos', style: 'subheader' },
+            {
+                table: {
+                    headerRows: 1,
+                    body: productsTableData
+                }
+            }
+        ],
+        styles: {
+            header: {
+                fontSize: 18,
+                bold: true
+            },
+            subheader: {
+                fontSize: 16,
+                bold: true,
+                margin: [0, 10, 0, 5]
+            }
+        }
+    };
+
+    // Genera y descarga el PDF
+    pdfMake.createPdf(docDefinition).download('factura.pdf');
 }

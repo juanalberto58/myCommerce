@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
+                <!-- Primer Card -->
                 <div class="card">
                     <div class="card-header">Contacto: {{ $contact->id }}</div>
                     <div class="card-body">
@@ -11,7 +12,7 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="dni">Dni</label>
+                                <label for="dni">DNI</label>
                                 <input type="text" name="dni" id="dni" class="form-control" value="{{ $contact->dni }}">
                             </div>
                             <div class="form-group">
@@ -27,11 +28,11 @@
                                 <input type="text" name="email" id="email" class="form-control" value="{{ $contact->email }}">
                             </div>
                             <div class="form-group">
-                                <label for="address">Direccion</label>
+                                <label for="address">Dirección</label>
                                 <input type="text" name="address" id="address" class="form-control" value="{{ $contact->address }}">
                             </div>
                             <div class="form-group">
-                                <label for="phone">Telefono</label>
+                                <label for="phone">Teléfono</label>
                                 <input type="text" name="phone" id="phone" class="form-control" value="{{ $contact->phone }}">
                             </div>
                             <div class="form-group row mb-0">
@@ -51,11 +52,54 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                            <button id="deleteContactButton" class="btn btn-danger delete-user" data-id="{{ $contact->id }}">Eliminar Contacto</button>    
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                    <button id="deleteContactButton" class="btn btn-danger delete-user" data-id="{{ $contact->id }}">Eliminar Contacto</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
+                    <div class="card mt-3">
+                        <div class="card-header">Pedidos del Contacto</div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <tbody>
+                                    @if ($purchases->isNotEmpty() || $sales->isNotEmpty())
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Fecha</th>
+                                                    <th>Tax Base</th>
+                                                    <th>Impuesto</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($purchases->isEmpty() ? $sales : $purchases as $transaction)
+                                                <tr>
+                                                    <td><a href="{{ route($transaction instanceof App\Models\Purchase ? 'purchases.show' : 'sales.show', $transaction->id) }}">{{ $transaction->id }}</a></td>
+                                                    <td>{{ $transaction->date }}</td>
+                                                    <td>{{ $transaction->tax_base }}</td>
+                                                    <td>{{ $transaction->tax }}</td>
+                                                    <td>{{ $transaction->total }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p>No hay registros disponibles.</p>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <script>
+                    var purchases = {!! $purchases !!};
+                    var sales = {!! $sales !!};
+                </script>            
             </div>
         </div>
     </div>

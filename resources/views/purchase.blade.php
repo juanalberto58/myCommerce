@@ -77,6 +77,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 300px;">Guardar Cambios</button>
                 <button id="deletePurchaseButton" class="btn btn-danger delete-purchase" data-id="{{ $purchase->id }}">Eliminar Pedido</button>
+                <button type="button" class="btn btn-primary" id="downloadButtonDeliveryNote">Descargar Albarán</button>  
             </form>
             </div>
         </div>

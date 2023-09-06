@@ -70,6 +70,9 @@
                                             Cliente
                                         </label>
                                     </div>
+                                    @error('contactType')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Guardar Contacto</button>
