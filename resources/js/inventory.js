@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const deleteProductButton = document.getElementById('deleteProductButton');
-    const filtrarInventario = document.getElementById('filtrarInventario');
 
     deleteProductButton.addEventListener('click', function(event) {
         event.preventDefault();
@@ -8,29 +7,37 @@ document.addEventListener('DOMContentLoaded', function() {
         eliminarProducto(productId);
     });
 
-    filtrarInventario.addEventListener('click', function() {
-        realizarFiltrado();
-    });
 
     cargarProveedores(contactsData, 'contact_id');
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const filtrarInventario = document.getElementById('filtrarInventario');
 
+    filtrarInventario.addEventListener('click', function() {
+        realizarFiltrado();
+    });
+});
+
+document.getElementById('limpiarFiltro').addEventListener('click', function() {
+    actualizarProductos(products);
+    
+    document.getElementById('referencia').value = '';
+    document.getElementById('proveedor').value = '';
+});
 
 // Función para filtrar los pedidos de los productos
 function realizarFiltrado() {
     var referenciaFiltro = document.getElementById('referencia').value;
     var proveedorId = parseInt(document.getElementById('proveedor').value);
-
-    var resultadosFiltrados = purchases.filter(function(purchase) {
-        var referenciaCoincide = !referenciaFiltro || dato.reference.toLowerCase().includes(referenciaFiltro.toLowerCase());
-        var proveedorFiltrar = isNaN(proveedorId) || purchase.contact_id === proveedorId;
+    var resultadosFiltrados = products.filter(function(prod) {
+        var referenciaCoincide = !referenciaFiltro || prod.reference.toLowerCase().includes(referenciaFiltro.toLowerCase());
+        var proveedorFiltrar = isNaN(proveedorId) || prod.contact_id === proveedorId;
 
         return referenciaCoincide && proveedorFiltrar;
     });
 
     actualizarProductos(resultadosFiltrados);
-
 }
 
 // Función para cargar todos los proveedores en el select
@@ -81,4 +88,55 @@ function eliminarProducto(productId) {
         });
     }
 }
+
+// Función para actualizar los productos de la tabla.
+function actualizarProductos(resultadosFiltrados) {
+
+    var productosContainer = document.getElementById('productos-container');
+
+    productosContainer.innerHTML = '';
+
+    resultadosFiltrados.forEach(function(prod) {
+        var colDiv = document.createElement('div');
+        colDiv.className = 'col-md-3 mb-4';
+
+        var cardLink = document.createElement('a');
+        cardLink.href = "{{ route('products.show', $prod->id) }}";
+        cardLink.className = 'card-link';
+
+        var cardDiv = document.createElement('div');
+        cardDiv.className = 'card';
+
+        var img = document.createElement('img');
+        img.src = prod.image;
+        img.className = 'card-img-top';
+        img.alt = prod.reference;
+        img.style.width = '100px';
+        img.style.height = '100px';
+
+        var cardBody = document.createElement('div');
+        cardBody.className = 'card-body';
+
+        var cardTitle = document.createElement('h5');
+        cardTitle.className = 'card-title';
+        cardTitle.textContent = prod.reference;
+
+        var cardText = document.createElement('p');
+        cardText.className = 'card-text';
+        cardText.textContent = prod.name;
+
+        cardBody.appendChild(cardTitle);
+        cardBody.appendChild(cardText);
+
+        cardDiv.appendChild(img);
+        cardDiv.appendChild(cardBody);
+
+        cardLink.appendChild(cardDiv);
+
+        colDiv.appendChild(cardLink);
+
+        productosContainer.appendChild(colDiv);
+    });
+}
+
 

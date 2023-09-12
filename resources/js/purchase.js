@@ -245,6 +245,7 @@ function crearPedidoCompra() {
 
     console.log(pedidoData);
 
+
     // Enviar los datos al servidor utilizando AJAX con jQuery
     $.ajax({
         type: "POST",
@@ -336,7 +337,6 @@ function cargarProveedores(contacts, select) {
         proveedorSelect.appendChild(option);
     });
 
-    // Inicializar Select2 para ambos selects
     $(proveedorSelect).select2({
         placeholder: 'Seleccionar proveedor',
         allowClear: true,
@@ -441,5 +441,5 @@ function generarAlbaranPDF() {
     };
 
     // Genera y descarga el PDF
-    pdfMake.createPdf(docDefinition).download('factura.pdf');
+    pdfMake.createPdf(docDefinition).download('albaran.pdf');
 }

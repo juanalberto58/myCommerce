@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     limpiarFiltro.addEventListener('click', function() {
-        cargarVentas(); // Llama a la función cargarCompras para mostrar todos los pedidos nuevamente
-        limpiarCamposFiltro(); // Limpia los campos de filtro
+        cargarVentas(); 
+        limpiarCamposFiltro(); 
     });
 
     cargarVentas();

@@ -61,7 +61,7 @@
                         <div class="col-md-8 offset-md-4">
                             <div class="btn-group" role="group" aria-label="Actions">
                                 <button id="addButtonSale" type="button" class="btn btn-primary">Añadir Línea de Pedido</button>
-                                <div class="mx-2"></div> <!-- Separación de 2 unidades (puedes ajustarla según tu preferencia) -->
+                                <div class="mx-2"></div> 
                                 <button id="createSaleOrder" type="button" class="btn btn-primary">Crear Pedido de Venta</button>
                             </div>
                         </div>
@@ -85,7 +85,6 @@
                             </tr>
                         </thead>
                         <tbody id="lineasPedidoTableBody">
-                            <!-- Aquí se reflejarán las líneas de pedido agregadas -->
                         </tbody>
                     </table>
                 </div>

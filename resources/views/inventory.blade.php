@@ -38,6 +38,7 @@
                         <tbody id="inventory-table-body">
                             <script>
                                 var contactsData = {!! $contactsJson !!};
+                                var products = {!! $products !!};
                             </script>
                         </tbody>
 
@@ -45,7 +46,7 @@
                         <div class="col-md-3 mb-4">
                             <a href="{{ route('products.show', $prod->id) }}" class="card-link">
                                 <div class="card">
-                                    <img src="{{ $prod->image }}" class="card-img-top" alt="{{ $prod->reference }}" style="width: 200px;">
+                                    <img src="{{ $prod->image }}" class="card-img-top" alt="{{ $prod->reference }}" style="width: 100px;height: 100px;">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $prod->reference }}</h5>
                                         <p class="card-text">{{ $prod->name }}</p>

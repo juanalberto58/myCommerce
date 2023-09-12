@@ -51,10 +51,9 @@
                     </div>
                     <div class="form-group row mb-0">
                         <div class="col-md-8 offset-md-4">
-                            <!-- Botones de "Añadir Línea de Pedido" y "Crear Pedido de Compra" en una fila con separación -->
                             <div class="btn-group" role="group" aria-label="Actions">
                                 <button id="addButton" type="button" class="btn btn-primary">Añadir Línea de Pedido</button>
-                                <div class="mx-2"></div> <!-- Separación de 2 unidades (puedes ajustarla según tu preferencia) -->
+                                <div class="mx-2"></div> 
                                 <button id="createPurchaseOrder" type="button" class="btn btn-primary">Crear Pedido de Compra</button>
                             </div>
                         </div>
