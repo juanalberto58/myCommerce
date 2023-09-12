@@ -4,6 +4,7 @@ var lineasPedido = [];
 document.addEventListener('DOMContentLoaded', function() {
     const filtrarCompras = document.getElementById('filtrarCompras');
     const limpiarFiltro = document.getElementById('limpiarFiltro');
+
     cargarProveedores(contactsData, 'proveedor');
 
     filtrarCompras.addEventListener('click', function() {
@@ -16,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     cargarCompras();
-
 });
 
 //Evento para los botones y las acciones de la vista de creacion de pedidos
@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
     cargarProveedores(contactsData, 'contact_id');
     cargarProductos(productsData, 'product_id');
 });
+
+
 
 
 //Evento para mostrar un pedido de compra concreto
@@ -61,6 +63,8 @@ document.addEventListener('DOMContentLoaded', function() {
         generarAlbaranPDF();
     });
 });
+
+
 
 
 
@@ -347,13 +351,8 @@ function cargarProveedores(contacts, select) {
 // Función para cargar todos los proveedores en el select
 function cargarProductos(products, select) {
     var productosSelect = document.getElementById(select);
-    var proveedorSelect = document.getElementById('contact_id');
 
-    var productos = products.filter(function(product) {
-        return product.contact_id == proveedorSelect.value;
-    });
-
-    productos.forEach(function(producto) {
+    products.forEach(function(producto) {
         var option = document.createElement('option');
         option.value = producto.id;
         option.textContent = producto.name;
@@ -366,6 +365,8 @@ function cargarProductos(products, select) {
         theme: 'bootstrap'
     });
 }
+
+
 
 // Función para eliminar un pedido de compra.
 function eliminarPedidoCompra(purchaseId) {
